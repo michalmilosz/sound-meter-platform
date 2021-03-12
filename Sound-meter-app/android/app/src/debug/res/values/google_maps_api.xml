@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=A0:50:DB:A0:EB:73:85:44:B5:A2:75:AF:78:67:38:5E:AB:49:C7:21%3Bcom.app.soundmeter
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.app.soundmeter
+
+    SHA-1 certificate fingerprint:
+    A0:50:DB:A0:EB:73:85:44:B5:A2:75:AF:78:67:38:5E:AB:49:C7:21
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBal1Mo6-t69OYLqh_Jd0b3NQK4vR540To</string>
+</resources>

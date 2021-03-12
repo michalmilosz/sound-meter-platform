@@ -1,0 +1,32 @@
+POST
+http://localhost:5000/users/login
+http://localhost:5000/users/register
+{
+  "login": "xxx",
+  "password": "xxx"
+}
+
+CREATE
+http://localhost:5000/users/profile
+{
+  "login" : "xxx",
+  "phone": "Android",
+  "calibration": -1
+}
+
+GET
+http://localhost:5000/users/profile?login=xxx
+
+POST
+http://localhost:5000/measurements/save
+{
+  "login": "xxx",
+  "min" : -1.5,
+  "max": 2.5,
+  "avg": 1,
+  "gps_longitude" : 53.1277,
+  "gps_latitude": 38.1256
+}
+
+GET
+http://localhost:5000/measurements/all?login=xxx

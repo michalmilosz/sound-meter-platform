@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserMeasurement"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.33"
+        android:weightSum="1"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Miernik"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="35dp"/>
+        <TextView
+            android:id="@+id/umDecibelsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="0"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="45dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.37"
+        android:weightSum="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Pomiar"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="35dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/umStartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zacznij pomiar"
+                    android:background="@drawable/button_style"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/umStopButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Przerwij pomiar"
+                    android:background="@drawable/button_style"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.30"
+        android:weightSum="4">
+        <TextView
+            android:id="@+id/umMaxDecibels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:text="Max: 0 dB"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"/>
+        <TextView
+            android:id="@+id/umMinDecibels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:text="Min: 0 dB"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"/>
+        <TextView
+            android:id="@+id/umAvgDecibels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:text="Średnia: 0 dB"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:gravity="center">
+            <Button
+                android:id="@+id/saveToDatabase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_style"
+                android:text="Zapisz do bazy"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

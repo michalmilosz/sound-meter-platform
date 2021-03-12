@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:orientation="vertical"
+    android:padding="25dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Model telefonu"
+        android:textSize="35dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/phoneModelEditText"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Model telefonu"
+        android:layout_marginVertical="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kalibracja"
+        android:textSize="35dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/userCalibrationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/edit_text_style"
+        android:hint="Kalibracja"
+        android:layout_marginVertical="10dp"
+        android:inputType="phone"/>
+    <Button
+        android:id="@+id/settingsSaveButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/button_style"
+        android:text="Zapisz"
+        android:textSize="20dp"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="40dp"/>
+</LinearLayout>
