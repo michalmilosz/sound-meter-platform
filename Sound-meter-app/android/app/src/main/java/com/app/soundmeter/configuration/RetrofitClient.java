@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // Konfiguracja klienta HTTP do komunikacji z backendem
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static String baseUrl = "http://192.168.8.114:8080";
+    private static String baseUrl = "http://192.168.8.102:8080";//"http://192.168.8.114:8080";
 
     public static Retrofit getRetrofit(){
         if(retrofit == null){

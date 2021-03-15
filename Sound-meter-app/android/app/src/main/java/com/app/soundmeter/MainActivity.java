@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             timer = new Timer();
             timer.scheduleAtFixedRate(new RecorderTask(mediaRecorder), 0, 100);
-            mediaRecorder.setOutputFile("/dev/null");
+            //MediaRecorder.setOutputFile("/dev/null");
+            mediaRecorder.setOutputFile("/data/data/com.app.soundmeter/test.3gp");
             try
             {
                 mediaRecorder.prepare();
