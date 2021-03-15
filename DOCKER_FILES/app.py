@@ -27,13 +27,6 @@ def to_json(list_of_strings):
     result += "]"
     return json.loads(result)
 
-# user = os.environ['POSTGRES_USER']
-# pwd = os.environ['POSTGRES_PASSWORD']
-# db = os.environ['POSTGRES_DB']
-# host = 'db'
-# port = '5432'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://%s:%s@%s:%s/%s' % (user, pwd, host, port, db)
-
 
 # controller
 # endpointy do komunikacji backednu z aplikacją mobilną
