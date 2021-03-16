@@ -127,13 +127,14 @@ def get_measurements_for_user():
 
 @app.route("/")
 def home():
-    form = SignupForm()
-    if form.validate_on_submit():
-        signup = Signups(name=form.name.data, email=form.email.data, date_signed_up=datetime.datetime.now())
-        db_session.add(signup)
-        db_session.commit()
-        return redirect(url_for('success'))
-    return render_template('signup.html', form=form)
+    return render_template('index.html')
+    # form = SignupForm()
+    # if form.validate_on_submit():
+    #     signup = Signups(name=form.name.data, email=form.email.data, date_signed_up=datetime.datetime.now())
+    #     db_session.add(signup)
+    #     db_session.commit()
+    #     return redirect(url_for('success'))
+    # return render_template('signup.html', form=form)
 # main
 # start aplikacji, konfiguracja adresu URL i portu
 if __name__ == '__main__':
