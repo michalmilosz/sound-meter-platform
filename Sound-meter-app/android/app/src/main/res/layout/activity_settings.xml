@@ -23,6 +23,36 @@
         android:hint="Model telefonu"
         android:layout_marginVertical="10dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.25"
+        android:weightSum="1"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Miernik"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="35dp"/>
+        <TextView
+            android:id="@+id/settingsDecibelsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="0"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="45dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,22 +60,88 @@
         android:textSize="35dp"
         android:textColor="@color/black"/>
 
-    <EditText
-        android:id="@+id/userCalibrationEditText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/edit_text_style"
-        android:hint="Kalibracja"
-        android:layout_marginVertical="10dp"
-        android:inputType="phone"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            android:padding="10dp">
+            <EditText
+                android:id="@+id/userSettingsMinTension"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_style"
+                android:hint="Min napięcie"
+                android:layout_marginVertical="10dp"
+                android:inputType="phone"
+                android:focusable="false"/>
+            <EditText
+                android:id="@+id/userSettingsMaxTension"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_style"
+                android:hint="Max napięcie"
+                android:layout_marginVertical="10dp"
+                android:inputType="phone"
+                android:focusable="false"/>
+            <Button
+                android:id="@+id/userSettingsStartButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/button_style"
+                android:text="Start"
+                android:textSize="20dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            android:padding="10dp">
+            <EditText
+                android:id="@+id/userSettingsMinDbValue"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_style"
+                android:hint="Min wartość db"
+                android:layout_marginVertical="10dp"
+                android:inputType="phone"/>
+            <EditText
+                android:id="@+id/userSettingsMaxDbValue"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_style"
+                android:hint="Max wartość db"
+                android:layout_marginVertical="10dp"
+                android:inputType="phone"/>
+            <Button
+                android:id="@+id/userSettingsStopButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/button_style"
+                android:text="Stop"
+                android:textSize="20dp"
+                android:layout_marginVertical="10dp"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+    </LinearLayout>
     <Button
-        android:id="@+id/settingsSaveButton"
+        android:id="@+id/userSettingsSaveButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/button_style"
         android:text="Zapisz"
         android:textSize="20dp"
-        android:textAllCaps="false"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="60dp"
+        android:textAllCaps="false"/>
 </LinearLayout>

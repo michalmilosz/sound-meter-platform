@@ -35,7 +35,7 @@ def to_json(list_of_strings):
 @app.route('/users/register', methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(login=data['login'], password=data['password'], calibration=0, phone="")
+    user = User(login=data['login'], password=data['password'], min_v=0, max_v=0, min_db=0, max_db=0, phone="")
     # db query
     registered_user = User.query.filter_by(login=user.login).first()
     #
@@ -51,7 +51,7 @@ def register():
 @app.route('/users/login', methods=['POST'])
 def login():
     data = request.get_json()
-    user = User(login=data['login'], password=data['password'], calibration=0, phone="")
+    user = User(login=data['login'], password=data['password'], min_v=0, max_v=0, min_db=0, max_db=0, phone="")
     # db query
     registered_user = User.query.filter_by(login=user.login).first()
     #
@@ -60,7 +60,10 @@ def login():
     else:
         return {
                     "login" : f"{registered_user.login}",
-                    "calibration": f"{registered_user.calibration}",
+                    "min_v": f"{registered_user.min_v}",
+                    "max_v": f"{registered_user.max_v}",
+                    "min_db": f"{registered_user.min_db}",
+                    "max_db": f"{registered_user.max_db}",
                     "phone" : f"{registered_user.phone}"
                }, 200
 
@@ -73,7 +76,10 @@ def update_profile():
     registered_user = User.query.filter_by(login=data['login']).first()
     if registered_user is not None:
         registered_user.phone = data['phone']
-        registered_user.calibration = data['calibration']
+        registered_user.min_v = data['min_v']
+        registered_user.max_v = data['max_v']
+        registered_user.min_db = data['min_db']
+        registered_user.max_db = data['max_db']
         db_session.commit()
         return {"message": f"User profile updated successfully."}, 200
     else:
@@ -87,9 +93,15 @@ def get_user_profile():
     registered_user = User.query.filter_by(login=request.args.get('login')).first()
     if registered_user is not None:
         #return jsonify(registered_user), 200
-        return jsonify(User=registered_user.login), 200
+        return jsonify(User=registered_user.login,
+                       Phone=registered_user.phone,
+                       Min_V=registered_user.min_v,
+                       Max_V=registered_user.max_v,
+                       Min_db=registered_user.min_db,
+                       Max_db=registered_user.max_db), 200
     else:
         return {"message": f"User {request.args.get('login')} not found."}, 400
+
 
 
 # zapis pomiaru

@@ -12,7 +12,6 @@ import com.app.soundmeter.configuration.DataHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-// Widok menu po zalogowaniu
 public class MenuActivity extends AppCompatActivity {
 
     @BindView(R.id.ButtonMeter)

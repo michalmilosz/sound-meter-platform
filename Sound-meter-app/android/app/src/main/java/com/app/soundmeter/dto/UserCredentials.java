@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Obiekt usera - logowanie i rejestracja
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor

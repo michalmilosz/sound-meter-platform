@@ -24,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lombok.extern.slf4j.Slf4j;
 
-// Wykonywanie pomiaru dla niezalogowanego usera
 @Slf4j
 public class MainActivity extends AppCompatActivity {
 
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         stopButton.setEnabled(false);
 
-        // rozpoczecie pomiaru
         startButton.setOnClickListener(view -> {
             if(!calibrationEditText.getText().toString().isEmpty())
                 calibration = Integer.parseInt(calibrationEditText.getText().toString());
@@ -75,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             startButton.setEnabled(false);
         });
 
-        // koniec pomiaru
         stopButton.setOnClickListener(view -> {
             toAdd = false;
             startButton.setEnabled(true);
@@ -99,21 +96,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // zatrzymanie pomiaru w wątku
     @Override
     protected void onPause() {
         super.onPause();
         stopRecording();
     }
 
-    // start pomiaru w wątku
     @Override
     protected void onResume() {
         super.onResume();
         startRecording();
     }
 
-    // start pomiaru
     private void startRecording(){
         if (mediaRecorder == null)
         {
@@ -123,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             timer = new Timer();
             timer.scheduleAtFixedRate(new RecorderTask(mediaRecorder), 0, 100);
-            //MediaRecorder.setOutputFile("/dev/null");
             mediaRecorder.setOutputFile("/data/data/com.app.soundmeter/test.3gp");
             try
             {
@@ -136,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // zatrzymanie pomiaru
     private void stopRecording(){
             timer.cancel();
             mediaRecorder.stop();
@@ -146,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             timer = null;
     }
 
-    // sprawdzenie uprawnien do mikrofonu
     private boolean checkPermissions(){
         int write_external_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int record_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
@@ -154,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 record_audio == PackageManager.PERMISSION_GRANTED;
     }
 
-    // nadanie uprawnien
     private void requirePermission(){
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -162,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         }, REQUEST_PERMISSION_CODE);
     }
 
-    // wykonywanie pomiaru w wątkach
     private class RecorderTask extends TimerTask {
         TextView sound = (TextView) findViewById(R.id.decibelsTextView);
         private MediaRecorder recorder;

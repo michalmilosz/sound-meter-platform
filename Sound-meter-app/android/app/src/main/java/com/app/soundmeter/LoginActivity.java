@@ -27,7 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-// Widok logowania
 @Slf4j
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,14 +45,11 @@ public class LoginActivity extends AppCompatActivity {
     private UserAPI userAPI = retrofit.create(UserAPI.class);
 
 
-    // Metoda wykonywana na starcie activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        // reakcje na klikniecia buttonów
         textViewGoToRegisterPage.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
@@ -74,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // logowanie usera po HTTP
     public void login(UserCredentials userCredentials, final View v) {
         Call<UserProfile> login = userAPI.loginUser(userCredentials);
         login.enqueue(new Callback<UserProfile>() {
@@ -97,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // alert o nieprawidlowych danych
     public void openAlert(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Niepoprawne dane logowania!");
@@ -109,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // otwracie nowego activity
     public void openMenuActivity() {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);

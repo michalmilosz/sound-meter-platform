@@ -5,17 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Profil usera
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
 
-    private int calibration;
-
     private String phone;
 
     private String login;
 
+    private Integer min_v;
+
+    private Integer max_v;
+
+    private float min_db;
+
+    private float max_db;
 }

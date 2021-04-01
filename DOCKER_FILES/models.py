@@ -15,20 +15,28 @@ class Signups(Base):
     date_signed_up = Column(DateTime())
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     phone: str
-    calibration: int
+    max_v: float
+    min_db: float
+    max_db: float
 
     login = Column(String(), primary_key=True)
     password = Column(String())
     phone = Column(String())
-    calibration = Column(Integer)
-    measurements = relationship('Measurement', backref='user', lazy=True)
+    min_v = Column(Float)
+    max_v = Column(Float)
+    min_db = Column(Float)
+    max_db = Column(Float)
+    measurements = relationship('Measurement', backref='users', lazy=True)
 
-    def __init__(self, login, password, calibration, phone):
+    def __init__(self, login, password, min_v, max_v, min_db, max_db, phone):
         self.login = login
         self.password = password
-        self.calibration = calibration
+        self.min_v = min_v
+        self.max_v = max_v
+        self.min_db = min_db
+        self.max_db = max_db
         self.phone = phone
 
     def __repr__(self):
@@ -50,7 +58,7 @@ class Measurement(Base):
     avg = Column(Float)
     gps_longitude = Column(Float)
     gps_latitude = Column(Float)
-    user_login = Column(String(), ForeignKey('user.login'), nullable=False)
+    user_login = Column(String(), ForeignKey('users.login'), nullable=False)
 
     def __init__(self, min, max, avg, gps_longitude, gps_latitude, user_login):
         self.min = min

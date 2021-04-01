@@ -10,7 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-// API do komunikacji z backendem (użytkownicy)
 public interface UserAPI {
 
     @POST("users/login")

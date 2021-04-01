@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Pomiar
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -23,6 +22,4 @@ public class Measurement {
     private float gps_latitude;
 
     private String login;
-
-
 }

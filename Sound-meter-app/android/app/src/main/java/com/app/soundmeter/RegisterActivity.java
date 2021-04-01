@@ -25,7 +25,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-// Widok rejestracji
 @Slf4j
 public class RegisterActivity extends AppCompatActivity {
 
@@ -62,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // rejestracja usera po HTTP
     public void register(UserCredentials userCredentials, final View v) {
         Call<ResponseMessage> login = userAPI.registerUser(userCredentials);
         login.enqueue(new Callback<ResponseMessage>() {
@@ -79,12 +77,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseMessage> call, Throwable t) {
-                log.info("/users/register (POST), Response: " + t.getMessage());
+                log.info("/users/login (POST), Response: " + t.getMessage());
             }
         });
     }
 
-    // Alert ze taki user juz istnieje
     public void openAlert(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Taki użytkownik już istnieje!");
@@ -96,7 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    // Alert ze dane lgoowania są puste
     public void openEmptyFieldAlert(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Login i hasło nie mogą być puste!");

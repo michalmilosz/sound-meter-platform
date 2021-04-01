@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.app.soundmeter.api.MeasurementAPI;
 import com.app.soundmeter.configuration.DataHolder;
@@ -31,7 +30,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-// Mapa Google
 @Slf4j
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -50,7 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    // metoda wykonywana kiedy mapa się załaduje w activity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -70,7 +67,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Drawable mediumIconDrawable = getResources().getDrawable(R.drawable.medium_icon);
         BitmapDescriptor mediumIcon = getMarkerIconFromDrawable(mediumIconDrawable);
 
-        // zapytanie HTTP pobierające wszystkie pomiary usera oraz dodające do mapy wg. przyjętych wyzej kolorów
         Call<List<Measurement>> getAllMeasurements = measurementAPI.getMeasurements(DataHolder.getInstance().getUserProfile().getLogin());
         getAllMeasurements.enqueue(new Callback<List<Measurement>>() {
             @Override
@@ -127,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    // tworzenie kolorowego punktu na podstawie drawable
     private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

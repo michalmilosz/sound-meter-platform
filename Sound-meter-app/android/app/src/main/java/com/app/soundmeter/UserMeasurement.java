@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-// Pomiar dla uzytkownika
 @Slf4j
 public class UserMeasurement extends AppCompatActivity {
 
@@ -79,7 +79,8 @@ public class UserMeasurement extends AppCompatActivity {
     private static List<Double> results;
     private boolean toAdd = false;
     private Handler handler = new Handler();
-    private double maxDecibelsValue, minDecibelsValue, avgDecibelsValue;
+    private double maxDecibelsValue, minDecibelsValue, avgDecibelsValue, dbResult;
+    private BigDecimal aFactor, bFactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +88,14 @@ public class UserMeasurement extends AppCompatActivity {
         setContentView(R.layout.activity_user_measurement);
         ButterKnife.bind(this);
 
+        calculateFactors();
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(
                 UserMeasurement.this
         );
 
         stopButton.setEnabled(false);
 
-        // sprawdzenie uprawnien
         if(ActivityCompat.checkSelfPermission(UserMeasurement.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(UserMeasurement.this,
@@ -115,14 +117,8 @@ public class UserMeasurement extends AppCompatActivity {
             startButton.setEnabled(false);
         });
 
-        // zastopowanie pomiaru
         stopButton.setOnClickListener(view -> {
             toAdd = false;
-            results = results.
-                    stream()
-                    .map(result ->
-                            result + DataHolder.getInstance().getUserProfile().getCalibration())
-                    .collect(Collectors.toList());
             stopButton.setEnabled(false);
             startButton.setEnabled(true);
             maxDecibelsValue = Collections.max(results);
@@ -133,12 +129,10 @@ public class UserMeasurement extends AppCompatActivity {
                             .mapToDouble(result->result)
                             .average()
                             .orElse(0);
-            maxDecibels.setText(String.format("Max: %.2f dB", maxDecibelsValue));
-            minDecibels.setText(String.format("Min: %.2f dB", minDecibelsValue));
-            avgDecibels.setText(String.format("Średnia: %.2f dB", avgDecibelsValue));
+            maxDecibels.setText(String.format("Max: %.1f dB", maxDecibelsValue));
+            minDecibels.setText(String.format("Min: %.1f dB", minDecibelsValue));
+            avgDecibels.setText(String.format("Średnia: %.1f dB", avgDecibelsValue));
         });
-
-        // klikniecie zapisz
         saveToDatabase.setOnClickListener(view -> {
             sendToDatabase(
                     Measurement.
@@ -154,7 +148,6 @@ public class UserMeasurement extends AppCompatActivity {
         });
     }
 
-    // Sprawdzenie uprawnien do GPS
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == 100 && grantResults.length>0 && (grantResults[0] + grantResults[1] == PackageManager.PERMISSION_GRANTED)){
@@ -164,7 +157,6 @@ public class UserMeasurement extends AppCompatActivity {
         }
     }
 
-    // Pobieranie wartosci GPS
     @SuppressLint("MissingPermission")
     private void getCurrentLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -200,7 +192,6 @@ public class UserMeasurement extends AppCompatActivity {
         }
     }
 
-    // rozpoczecie pomiaru
     private void startRecording(){
         if (mediaRecorder == null)
         {
@@ -209,8 +200,7 @@ public class UserMeasurement extends AppCompatActivity {
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             timer = new Timer();
-            timer.scheduleAtFixedRate(new RecorderTask(mediaRecorder), 0, 100);
-            //MediaRecorder.setOutputFile("/dev/null");
+            timer.scheduleAtFixedRate(new RecorderTask(mediaRecorder), 0, 500);
             mediaRecorder.setOutputFile("/data/data/com.app.soundmeter/test.3gp");
             try
             {
@@ -223,7 +213,6 @@ public class UserMeasurement extends AppCompatActivity {
         }
     }
 
-    // sprawdzenie uprawnien do mikrofonu
     private boolean checkPermissions(){
         int write_external_storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int record_audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
@@ -231,7 +220,6 @@ public class UserMeasurement extends AppCompatActivity {
                 record_audio == PackageManager.PERMISSION_GRANTED;
     }
 
-    // ustawienie uprawnien
     private void requirePermission(){
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -239,7 +227,6 @@ public class UserMeasurement extends AppCompatActivity {
         }, 100);
     }
 
-    // wykonywanie pomiaru w wątkach
     private class RecorderTask extends TimerTask {
         TextView sound = (TextView) findViewById(R.id.umDecibelsTextView);
         private MediaRecorder recorder;
@@ -252,13 +239,13 @@ public class UserMeasurement extends AppCompatActivity {
             runOnUiThread((Runnable) () -> {
                 if(mediaRecorder!=null) {
                     int amplitude = recorder.getMaxAmplitude();
-                    double amplitudeDb = 20 * Math.log10((double) Math.abs(amplitude));
-                    sound.setText(String.format("%.2f", amplitudeDb));
+                    calculateResult(amplitude);//double amplitudeDb =20 * Math.log10((double) Math.abs(amplitude));
+                    sound.setText(String.format("%.1f", dbResult)+" dB");
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (toAdd) {
-                                results.add(amplitudeDb);
+                                results.add(dbResult);
                             }
                         }
                     });
@@ -267,7 +254,6 @@ public class UserMeasurement extends AppCompatActivity {
         }
     }
 
-    // zatrzymanie pomiaru
     private void stopRecording(){
         timer.cancel();
         mediaRecorder.stop();
@@ -277,21 +263,17 @@ public class UserMeasurement extends AppCompatActivity {
         timer = null;
     }
 
-    // zatrzymanie pomiaru w wątku
     @Override
     protected void onPause() {
         super.onPause();
         stopRecording();
     }
 
-    // start pomiaru w wątku
     @Override
     protected void onResume() {
         super.onResume();
         startRecording();
     }
-
-    // Zapis pomiaru do bazy danych
     private void sendToDatabase(Measurement measurement){
         Call<ResponseMessage> measurementCall = measurementAPI.saveMeasurement(measurement);
         measurementCall.enqueue(new Callback<ResponseMessage>() {
@@ -308,5 +290,23 @@ public class UserMeasurement extends AppCompatActivity {
                 log.info("/measurements/save (POST), Response: " + t.getMessage());
             }
         });
+    }
+
+    private void calculateFactors(){
+        BigDecimal L1 = new BigDecimal(DataHolder.getInstance().getUserProfile().getMin_db());
+        BigDecimal L2 = new BigDecimal(DataHolder.getInstance().getUserProfile().getMax_db());
+
+        BigDecimal p1 = new BigDecimal(2*1e-5 * Math.pow(10d, L1.doubleValue()/20));
+        BigDecimal p2 = new BigDecimal(2*1e-5 * Math.pow(10d, L2.doubleValue()/20));
+
+        BigDecimal x1 = new BigDecimal(DataHolder.getInstance().getUserProfile().getMin_v());
+        BigDecimal x2 = new BigDecimal(DataHolder.getInstance().getUserProfile().getMax_v());
+
+        aFactor = new BigDecimal((p1.doubleValue() - p2.doubleValue())/(x1.doubleValue() - x2.doubleValue()));
+        bFactor = new BigDecimal(p1.doubleValue() - (x1.multiply(aFactor)).doubleValue());
+    }
+
+    private void calculateResult(Integer microphoneVoltage){
+        dbResult = 20*Math.log10(((aFactor.doubleValue() * microphoneVoltage) + bFactor.doubleValue())/1e-5);
     }
 }
