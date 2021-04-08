@@ -4,4 +4,4 @@ SQLAlchemy
 Flask-WTF
 flask_sqlalchemy
 flask_migrate
-dataclasses
+flask_login
