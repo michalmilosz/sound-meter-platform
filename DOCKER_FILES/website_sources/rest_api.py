@@ -5,7 +5,7 @@ from flask import Blueprint, Flask, render_template, redirect, url_for, request,
 from .forms import SignupForm
 
 from .models import User, Measurement
-from . import db
+from . import db, bcrypt
 
 import json
 
@@ -32,26 +32,27 @@ def to_json(list_of_strings):
 @rest_api.route('/users/register', methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(login=data['login'], password=data['password'], min_v=0, max_v=0, min_db=0, max_db=0, phone="")
+    password=str(bcrypt.generate_password_hash(data['password'],10))[2:-1]
+    user = User(login=data['login'], password=password, min_v=0, max_v=0, min_db=0, max_db=0, phone="")
     # db query
     registered_user = User.query.filter_by(login=user.login).first()
     #
     if registered_user is not None and registered_user.login == user.login:
         return {"message": f"The same user {user.login} exists."}, 400
     else:
-        db.add(user)
-        db.commit()
+        db.session.add(user)
+        db.session.commit()
         return {"message": f"user {user.login} has been created successfully."}, 201
 # logowanie usera
 @rest_api.route('/users/login', methods=['POST'])
 def login():
     data = request.get_json()
-    user = User(login=data['login'], password=data['password'], min_v=0, max_v=0, min_db=0, max_db=0, phone="")
+    login=data['login']
+    password=data['password']
     # db query
-    registered_user = User.query.filter_by(login=user.login).first()
-    #
-    if registered_user is None or registered_user.password != user.password:
-        return {"message": f"user {user.login} not authorized."}, 401
+    registered_user = User.query.filter_by(login=login).first()
+    if registered_user is None or not bcrypt.check_password_hash(registered_user.password, password):
+        return {"message": f"user {login} not authorized."}, 401
     else:
         return {
                     "login" : f"{registered_user.login}",
@@ -73,7 +74,7 @@ def update_profile():
         registered_user.max_v = data['max_v']
         registered_user.min_db = data['min_db']
         registered_user.max_db = data['max_db']
-        db.commit()
+        db.session.commit()
         return {"message": f"User profile updated successfully."}, 200
     else:
         return {"message": f"User {data['login']} not found."}, 400
@@ -109,8 +110,8 @@ def save_measurement():
             gps_latitude=data['gps_latitude'],
             user_login=data['login']
         )
-        db.add(measurement)
-        db.commit()
+        db.session.add(measurement)
+        db.session.commit()
         return {"message": f"Saved successfully."}, 201
 # pobieranie pomiarów dla danego usera
 @rest_api.route('/measurements/all', methods=['GET'])

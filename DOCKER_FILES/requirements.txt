@@ -5,3 +5,5 @@ Flask-WTF
 flask_sqlalchemy
 flask_migrate
 flask_login
+flask-bcrypt
+flask-googlemaps

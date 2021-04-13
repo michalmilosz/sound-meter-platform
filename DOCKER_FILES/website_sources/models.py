@@ -14,14 +14,17 @@ class Signups(db.Model):
     email = db.Column(db.String(256), unique=True)
     date_signed_up = db.Column(db.DateTime())
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
+    __table_args__ = {'extend_existing': True} 
     phone: str
     max_v: float
     min_db: float
     max_db: float
-
-    login = db.Column(db.String(), primary_key=True)
+    
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(150), unique=True)
+    email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String())
     phone = db.Column(db.String())
     min_v = db.Column(db.Float)
@@ -30,14 +33,14 @@ class User(db.Model):
     max_db = db.Column(db.Float)
     measurements = db.relationship('Measurement', backref='user', lazy=True)
 
-    def __init__(self, login, password, min_v, max_v, min_db, max_db, phone):
-        self.login = login
-        self.password = password
-        self.min_v = min_v
-        self.max_v = max_v
-        self.min_db = min_db
-        self.max_db = max_db
-        self.phone = phone
+    # def __init__(self, login, password, min_v, max_v, min_db, max_db, phone):
+    #     self.login = login
+    #     self.password = password
+    #     self.min_v = min_v
+    #     self.max_v = max_v
+    #     self.min_db = min_db
+    #     self.max_db = max_db
+    #     self.phone = phone
 
     def __repr__(self):
         return f"User {self.login}"

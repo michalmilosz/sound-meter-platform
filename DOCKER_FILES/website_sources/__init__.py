@@ -8,9 +8,12 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
+from flask_bcrypt import Bcrypt
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from flask_googlemaps import GoogleMaps
 import json
 
 
@@ -21,6 +24,7 @@ host = 'db'
 port = '5432'
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -28,6 +32,12 @@ def create_app():
     app.config["SECRET_KEY"] = os.environ['APP_SECRET_KEY'] 
     app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user}:{pwd}@{host}:{port}/{db_name}"
     db.init_app(app)
+    bcrypt.init_app(app)
+    # you can set key as config
+    app.config['GOOGLEMAPS_KEY'] = "8JZ7i18MjFuM35dJHq70n3Hx4"
+
+    # Initialize the extension
+    GoogleMaps(app)
 
     from .auth import auth
     from .views import views
@@ -47,7 +57,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return Users.query.get(int(id))
+        return User.query.get(int(id))
 
 
     @app.route("/home")
