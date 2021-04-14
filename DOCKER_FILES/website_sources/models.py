@@ -24,7 +24,6 @@ class User(db.Model, UserMixin):
     
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(150), unique=True)
-    email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String())
     phone = db.Column(db.String())
     min_v = db.Column(db.Float)
@@ -75,20 +74,3 @@ class Measurement(db.Model):
     def __repr__(self):
         return "{"+f'''"id":{self.id}, "min":{self.min},"max":{self.max},"avg":{self.avg},"gps_longitude":{self.gps_longitude},"gps_latitude":{self.gps_latitude}'''+"}"
 
-
-
-class Users(db.Model, UserMixin):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(150))
-    first_name = db.Column(db.String(150))
-
-    notes = db.relationship('Note')
-
-class Note(db.Model):
-    __tablename__ = 'notes'
-    id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

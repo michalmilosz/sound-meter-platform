@@ -1,22 +1,12 @@
-{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block
+{% extends "base.html" %} {% block title %}Rejestracja{% endblock %} {% block
 content %}
 <br />
 <br />
 <br />
 <form method="POST">
   <div class="center col-md-12 text-center">
-    <h3 align="center">Sign Up</h3>
+    <h3 align="center">Zarejestruj się</h3>
     <br />
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        placeholder="Enter email"
-      />
-    </div>
     <div class="form-group">
       <label for="login">Login</label>
       <input
@@ -24,36 +14,33 @@ content %}
         class="form-control"
         id="login"
         name="login"
-        placeholder="Enter login"
+        placeholder="Wprowadź login"
       />
     </div>
     <div class="form-group">
-      <label for="password1">Password</label>
+      <label for="password1">Hasło</label>
       <input
         type="password"
         class="form-control"
         id="password1"
         name="password1"
-        placeholder="Enter password"
+        placeholder="Wprowadź hasło"
       />
     </div>
     <div class="form-group">
-      <label for="password2">Password (Confirm)</label>
+      <label for="password2">Hasło (Potwierdź)</label>
       <input
         type="password"
         class="form-control"
         id="password2"
         name="password2"
-        placeholder="Confirm password"
+        placeholder="Potwierdź hasło"
       />
     </div>
     <br />
     <div class="col-md-12 text-center">
-      <button type="submit" name="sign-up" class="btn btn-primary text-center">
-        Zarejestruj!
-      </button>
-      <button type="menu" name="login" class="btn btn-primary text-center">
-        Zaloguj
+      <button type="menu" name="sign-up" class="btn btn-primary text-center">
+        Zarejestruj
       </button>
     </div>
   </div>

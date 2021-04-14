@@ -1,21 +1,119 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-<form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
-  </div>
-</form>
+{% extends "base.html" %} {% block head %}
+<script>
+  function initMap() {
+    // The location of Uluru
+    const uluru = { lat: -25.344, lng: 131.036 };
+    const red_icon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      strokeColor: "#F01202",
+      fillColor: "#F01202",
+      fillOpacity: 1.0,
+      scale: 5,
+    };
+    const yellow_icon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      strokeColor: "#fbff10",
+      fillColor: "#fbff10",
+      fillOpacity: 1.0,
+      scale: 5,
+    };
+    const green_icon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      strokeColor: "#16f002",
+      fillColor: "#16f002",
+      fillOpacity: 1.0,
+      scale: 5,
+    };
+    // The map, centered at Uluru
+    ("{%if measurements %}");
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: {
+        lat: parseFloat("{{measurements[0]['gps_latitude']}}"),
+        lng: parseFloat("{{measurements[0]['gps_longitude']}}"),
+      },
+    });
+    // The marker, positioned at Uluru
+    ("{% for measurement in measurements -%}");
+    var measurementPoints = {
+      lat: parseFloat("{{measurement['gps_latitude']}}"),
+      lng: parseFloat("{{measurement['gps_longitude']}}"),
+    };
+    var use_icon = yellow_icon;
+    if (parseFloat("{{measurement['avg']}}") <= 40) {
+      var use_icon = green_icon;
+    } else if (parseFloat("{{measurement['avg']}}") > 70) {
+      var use_icon = red_icon;
+    }
+    new google.maps.Marker({
+      position: measurementPoints,
+      icon: use_icon,
+      map: map,
+    });
+    ("{% endfor %}");
+    ("{%else%}");
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: {
+        lat: 52.229676,
+        lng: 21.012229,
+      },
+    });
+    ("{%endif%}");
+  }
+</script>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static',filename='styles/home_style.css') }}"
+  type="text/css"
+/>
+
+{% endblock %} {% block title %}Home{% endblock %} {% block content %}
+<br />
+<br />
+<h1 align="center">Mapa pomiarów</h1>
+<p id="demo"></p>
+
+<script>
+  // var x = "{{measurements[1]}}";
+  // document.getElementById("demo").innerHTML = x;
+</script>
+<div id="map" class="center">
+  <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3qIsespyetlbCZIJPrvX7NXMCokENUig&callback=initMap&libraries=&v=weekly"
+    async
+  ></script>
+</div>
+<br />
+<br />
+<br />
+<table class="table table-bordered center">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Wartość minimalna</th>
+      <th scope="col">Wartość maksymalna</th>
+      <th scope="col">Wartość średnia</th>
+      <th scope="col">Długość geograficzna</th>
+      <th scope="col">Szerokość geograficzna</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for measurement in measurements %}
+    <tr>
+      <td>{{measurement['id']}}</td>
+      <td>{{measurement['min']}} dB</td>
+      <td>{{measurement['max']}} dB</td>
+      <td>{{measurement['avg']}} dB</td>
+      <td>{{measurement['gps_longitude']}}</td>
+      <td>{{measurement['gps_latitude']}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+<br />
+<br />
+<br />
 {% endblock %}
+<!--src="{{ url_for('static',filename='maps.js') }}"-->

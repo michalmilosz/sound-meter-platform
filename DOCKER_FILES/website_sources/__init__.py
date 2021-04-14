@@ -9,11 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 
 from flask_bcrypt import Bcrypt
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from flask_googlemaps import GoogleMaps
 import json
 
 
@@ -33,11 +28,6 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user}:{pwd}@{host}:{port}/{db_name}"
     db.init_app(app)
     bcrypt.init_app(app)
-    # you can set key as config
-    app.config['GOOGLEMAPS_KEY'] = "8JZ7i18MjFuM35dJHq70n3Hx4"
-
-    # Initialize the extension
-    GoogleMaps(app)
 
     from .auth import auth
     from .views import views
@@ -47,7 +37,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import Users, Note, User, Measurement
+    from .models import User, Measurement
 
     create_database(app)
     
